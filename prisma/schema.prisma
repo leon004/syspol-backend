@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  Admin
+  Juez
+  Policia
+}
+
+//modelo para usuarios
+model User {
+  id             Int          @id @default(autoincrement())
+  nombre         String
+  apellidoPaterno String
+  apellidoMaterno String
+  usuario        String       @unique
+  password     String
+  rol            Role
+  infracciones   Infraccion[]  // Relación uno a muchos con Infracciones
+}
+
+
+// Modelo para Infracciones
+model Infraccion {
+  id              Int       @id @default(autoincrement())
+  folio           String    @default(uuid()) // Genera un UUID para cada infracción
+  policiaId       Int
+  policia         User      @relation(fields: [policiaId], references: [id])
+  placas          String
+  pais            String?
+  estado          String?
+  marca           String
+  modelo          String
+  year             Int?
+  color           String?
+  motivoDeMulta   String    @db.VarChar(255)
+  articuloFraccion String
+  ubicacion       String    // Tipo String puede almacenar URLs o coordenadas
+  nombreInfractor String
+  fecha           DateTime  @default(now())
+  hora            DateTime  @default(now())
+  imagenes        String?   // Podrías considerar usar un array o un string para URLs separadas por comas
+}
+
+// Modelo para Vehiculos
+model Vehiculo {
+  id      Int    @id @default(autoincrement())
+  placas  String @unique
+  estado  String?
+  vin     String?
+  marca   String
+  modelo  String
+  year     Int?
+  color   String?
+}
