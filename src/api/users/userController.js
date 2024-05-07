@@ -29,18 +29,28 @@ const userController = {
         try {
             const { usuario, password } = req.body;
             const user = await userService.findUserByUserName(usuario);
-
-            if (!user) {
-                return res.status(401).json({ message: "Authentication failed: user not found." });
+            
+            if(!user) {
+                return res.status(401).json({message: "Authentication failed: user not found. "});
             }
-
             const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
-                return res.status(401).json({ message: "Authentication failed: incorrect password." });
+            if(!isMatch) {
+                return res.status(401).json({ message: "Authentication failed: incorrect password" });
             }
 
-            const token = jwt.sign({ userId: user.id, role: user.rol }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.json({ message: "User authenticated successfully", token });
+            const token  = jwt.sign({ userId: user.id, role: user.rol }, process.env.JWT_SECRET, {expiresIn: '1h'});
+            //Objeto para obtener todos los datos del usuario al autenticar
+
+            const userForFrontend = {
+                id: user.id,
+                nombre: user.nombre,
+                apellidoPaterno: user.apellidoPaterno,
+                apellidoMaterno: user.apellidoMaterno,
+                usuario: user.usuario,
+                rol: user.rol
+            };
+            res.json({ message: "User authenticated successfully", token, user: userForFrontend });
+
         } catch (error) {
             res.status(500).json({ message: "Authentication failed", error: error.message });
         }
