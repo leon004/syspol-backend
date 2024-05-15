@@ -64,6 +64,14 @@ const infractionService = {
         } catch (error) {
             throw new Error('Failed to retrieve infractions: ' + error.message);
         }
+    },
+    getAllInfractions: async () => {
+        try {
+            const infractions = await prisma.infraccion.findMany();
+            return infractions;
+        } catch (error) {
+            throw new Error('Failed to retrieve infractions: ' + error.message);
+        }
     }
 };
 

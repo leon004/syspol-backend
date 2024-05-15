@@ -64,7 +64,16 @@ const infractionController = {
         } catch (error) {
             res.status(500).json({ message: "Error retrieving infractions", error: error.message });
         }
+    },
+    getAllInfractions: async (req, res) => {
+        try {
+            const infractions = await infractionService.getAllInfractions();
+            res.json(infractions);
+        } catch (error) {
+            res.status(500).json({ message: "Error retrieving infractions", error: error.message });
+        }
     }
+    
 };
 
 module.exports = infractionController;
