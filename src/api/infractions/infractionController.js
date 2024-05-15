@@ -53,6 +53,17 @@ const infractionController = {
         } catch (error) {
             res.status(500).json({ message: "Error deleting infraction", error: error.message });
         }
+    },
+
+    // Obtener infracciones por ID del policía
+    getInfractionsByPoliciaId: async (req, res) => {
+        try {
+            const { policiaId } = req.params;
+            const infractions = await infractionService.getInfractionsByPoliciaId(policiaId);
+            res.json(infractions);
+        } catch (error) {
+            res.status(500).json({ message: "Error retrieving infractions", error: error.message });
+        }
     }
 };
 

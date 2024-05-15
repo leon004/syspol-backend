@@ -52,6 +52,18 @@ const infractionService = {
         } catch (error) {
             throw new Error('Failed to delete infraction: ' + error.message);
         }
+    },
+
+    // Obtener infracciones por ID del policía
+    getInfractionsByPoliciaId: async (policiaId) => {
+        try {
+            const infractions = await prisma.infraccion.findMany({
+                where: { policiaId: parseInt(policiaId) }
+            });
+            return infractions;
+        } catch (error) {
+            throw new Error('Failed to retrieve infractions: ' + error.message);
+        }
     }
 };
 

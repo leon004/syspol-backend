@@ -8,5 +8,6 @@ router.post('/', authenticateToken, infractionController.createInfraction);
 router.get('/:id', authenticateToken, infractionController.getInfraction);
 router.put('/:id', authenticateToken, infractionController.updateInfraction);
 router.delete('/:id', authenticateToken, infractionController.deleteInfraction);
+router.get('/policia/:policiaId', authenticateToken, infractionController.getInfractionsByPoliciaId);
 
 module.exports = router;
