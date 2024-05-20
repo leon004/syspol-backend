@@ -65,6 +65,38 @@ const infractionService = {
             throw new Error('Failed to retrieve infractions: ' + error.message);
         }
     },
+
+    // Obtener infracciones por placa o VIN
+    getInfractionsByPlateOrVin: async (plateOrVin) => {
+        try {
+            const infractions = await prisma.infraccion.findMany({
+                where: {
+                    OR: [
+                        { placas: plateOrVin },
+                        { vin: plateOrVin }
+                    ]
+                }
+            });
+            return infractions;
+        } catch (error) {
+            throw new Error('Failed to retrieve infractions: ' + error.message);
+        }
+    },
+
+    // Obtener infracciones por placas
+    getInfractionsByPlates: async (plates) => {
+        try {
+            const infractions = await prisma.infraccion.findMany({
+                where: {
+                    placas: plates
+                }
+            });
+            return infractions;
+        } catch (error) {
+            throw new Error('Failed to retrieve infractions: ' + error.message);
+        }
+    },
+
     getAllInfractions: async () => {
         try {
             const infractions = await prisma.infraccion.findMany();

@@ -12,6 +12,26 @@ const infractionController = {
         }
     },
 
+    getInfractionsByPlateOrVin: async (req, res) => {
+        try {
+            const { plateOrVin } = req.query;
+            const infractions = await infractionService.getInfractionsByPlateOrVin(plateOrVin);
+            res.json(infractions);
+        } catch (error) {
+            res.status(500).json({ message: "Error retrieving infractions", error: error.message });
+        }
+    },
+
+    getInfractionsByPlates: async (req, res) => {
+        try {
+            const { plates } = req.query;
+            const infractions = await infractionService.getInfractionsByPlates(plates);
+            res.json(infractions);
+        } catch (error) {
+            res.status(500).json({ message: "Error retrieving infractions", error: error.message });
+        }
+    },
+
     // Obtener una infracción por ID
     getInfraction: async (req, res) => {
         try {
@@ -65,6 +85,7 @@ const infractionController = {
             res.status(500).json({ message: "Error retrieving infractions", error: error.message });
         }
     },
+
     getAllInfractions: async (req, res) => {
         try {
             const infractions = await infractionService.getAllInfractions();
@@ -73,7 +94,6 @@ const infractionController = {
             res.status(500).json({ message: "Error retrieving infractions", error: error.message });
         }
     }
-    
 };
 
 module.exports = infractionController;

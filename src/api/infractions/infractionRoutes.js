@@ -9,6 +9,8 @@ router.get('/:id', authenticateToken, infractionController.getInfraction);
 router.put('/:id', authenticateToken, infractionController.updateInfraction);
 router.delete('/:id', authenticateToken, infractionController.deleteInfraction);
 router.get('/policia/:policiaId', authenticateToken, infractionController.getInfractionsByPoliciaId);
-router.get('/', authenticateToken, infractionController.getAllInfractions); // Agrega esta línea
+router.get('/', authenticateToken, infractionController.getAllInfractions); 
+router.get('/search', authenticateToken, infractionController.getInfractionsByPlateOrVin);
+router.get('/by-plates', authenticateToken, infractionController.getInfractionsByPlates); // Nueva ruta
 
 module.exports = router;
