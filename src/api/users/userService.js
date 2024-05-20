@@ -14,6 +14,16 @@ const userService = {
         }
     },
 
+    // Obtener todos los usuarios
+    getAllUsers: async () => {
+        try {
+            const users = await prisma.user.findMany();
+            return users;
+        } catch (error) {
+            throw new Error('Failed to retrieve users: ' + error.message);
+        }
+    },
+
     // Encontrar un usuario por su nombre de usuario
     findUserByUserName: async (usuario) => {
         try {

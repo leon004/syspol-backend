@@ -31,16 +31,15 @@ const userController = {
             const user = await userService.findUserByUserName(usuario);
             
             if(!user) {
-                return res.status(401).json({message: "Authentication failed: user not found. "});
+                return res.status(401).json({message: "Authentication failed: user not found."});
             }
             const isMatch = await bcrypt.compare(password, user.password);
             if(!isMatch) {
                 return res.status(401).json({ message: "Authentication failed: incorrect password" });
             }
 
-            const token  = jwt.sign({ userId: user.id, role: user.rol }, process.env.JWT_SECRET, {expiresIn: '1h'});
-            //Objeto para obtener todos los datos del usuario al autenticar
-
+            const token  = jwt.sign({ userId: user.id, rol: user.rol }, process.env.JWT_SECRET, {expiresIn: '1h'});
+            // Objeto para obtener todos los datos del usuario al autenticar
             const userForFrontend = {
                 id: user.id,
                 nombre: user.nombre,
@@ -53,6 +52,16 @@ const userController = {
 
         } catch (error) {
             res.status(500).json({ message: "Authentication failed", error: error.message });
+        }
+    },
+
+    // Obtener todos los usuarios
+    async getAllUsers(req, res) {
+        try {
+            const users = await userService.getAllUsers();
+            res.json(users);
+        } catch (error) {
+            res.status(500).json({ message: "Error retrieving users", error: error.message });
         }
     },
 
